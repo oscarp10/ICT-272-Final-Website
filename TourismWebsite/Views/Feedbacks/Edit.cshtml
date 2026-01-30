@@ -1,0 +1,48 @@
+@model TourismWebsite.Models.Feedback
+
+@{
+    ViewData["Title"] = "Edit Feedback";
+}
+
+<div class="container mt-4">
+    <h2>Edit Your Feedback</h2>
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                @* Hidden fields are essential so the database knows which record to update *@
+                <input type="hidden" asp-for="FeedbackId" />
+                <input type="hidden" asp-for="TourId" />
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Rating</label>
+                    <div class="star-rating">
+                        @for (int i = 5; i >= 1; i--)
+                        {
+                            <input type="radio" name="Rating" value="@i" id="rating-@i" @(Model?.Rating == i ? "checked" : "") />
+                            <label for="rating-@i" title="@i stars">&#9733;</label>
+                        }
+                    </div>
+                    <span asp-validation-for="Rating" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Comment" class="form-label fw-bold"></label>
+                    <textarea asp-for="Comment" class="form-control" rows="4"></textarea>
+                    <span asp-validation-for="Comment" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

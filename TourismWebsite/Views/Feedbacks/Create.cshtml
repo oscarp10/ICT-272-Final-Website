@@ -1,0 +1,79 @@
+@model TourismWebsite.Models.Feedback
+@{
+    ViewData["Title"] = "Leave Feedback";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+            <div class="text-center mb-4">
+                <h2 class="fw-bold text-dark">How was your trip?</h2>
+                <p class="text-muted">Reviewing: <span class="text-primary fw-semibold">@ViewBag.TourTitle</span></p>
+            </div>
+
+            <div class="card shadow border-0">
+                <div class="card-body p-4">
+                    <form asp-action="Create" method="post">
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+
+                        <input type="hidden" asp-for="TourId" />
+
+                        <div class="mb-4 text-center">
+                            <label class="form-label d-block fw-bold mb-3">Your Rating</label>
+                            <div class="star-rating-wrapper">
+                                @for (int i = 5; i >= 1; i--)
+                                {
+                                    <input type="radio" name="Rating" value="@i" id="rating-@i" @(Model?.Rating == i ? "checked" : "") />
+                                    <label for="rating-@i" title="@i stars">★</label>
+                                }
+                            </div>
+                            <span asp-validation-for="Rating" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Comment" class="form-label fw-bold small text-uppercase">Tell us more</label>
+                            <textarea asp-for="Comment" class="form-control border-2" rows="5" placeholder="What did you love about this tour?"></textarea>
+                            <span asp-validation-for="Comment" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg shadow-sm">
+                                <i class="bi bi-send-fill me-2"></i>Submit Review
+                            </button>
+                            <a href="javascript:history.back()" class="btn btn-link btn-sm text-decoration-none text-muted">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Modern Star Rating CSS */
+    .star-rating-wrapper {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: center;
+        gap: 10px;
+    }
+
+        .star-rating-wrapper input {
+            display: none;
+        }
+
+        .star-rating-wrapper label {
+            font-size: 2.5rem;
+            color: #dee2e6; /* Gray stars */
+            cursor: pointer;
+            transition: color 0.2s ease-in-out;
+        }
+
+            /* Hover & Checked Logic */
+            .star-rating-wrapper label:hover,
+            .star-rating-wrapper label:hover ~ label,
+            .star-rating-wrapper input:checked ~ label {
+                color: #ffc107; /* Gold stars */
+            }
+</style>

@@ -1,0 +1,66 @@
+@model IEnumerable<TourismWebsite.Models.TouristBooking>
+
+@{
+    ViewData["Title"] = "Admin Bookings";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-briefcase me-2"></i>Booking Management</h2>
+        <span class="badge bg-dark">@Model.Count() Total</span>
+    </div>
+
+    <div class="row g-3">
+        @foreach (var booking in Model)
+        {
+            <div class="col-xl-4 col-md-6">
+                <div class="card shadow-sm h-100 border-start border-4 @(booking.Status == "Confirmed" ? "border-success" : booking.Status == "Cancelled" ? "border-danger" : "border-warning")">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h6 class="fw-bold mb-0">@booking.Tour?.Title</h6>
+                            <span class="badge @(booking.Status == "Confirmed" ? "bg-success" : booking.Status == "Cancelled" ? "bg-danger" : "bg-warning text-dark")">
+                                @booking.Status
+                            </span>
+                        </div>
+
+                        <div class="row small text-muted mb-3">
+                            <div class="col-6">
+                                <i class="bi bi-person"></i> @booking.TouristName
+                            </div>
+                            <div class="col-6 text-end">
+                                <i class="bi bi-calendar-event"></i> @booking.BookingDate.ToString("dd MMM")
+                            </div>
+                        </div>
+
+                        <div class="bg-light p-2 rounded mb-3 d-flex justify-content-between align-items-center">
+                            <span class="small">@booking.NumPeople People</span>
+                            <span class="fw-bold text-primary">@booking.TotalPrice.ToString("C")</span>
+                        </div>
+
+                        <form asp-action="UpdateStatus" method="post" class="d-flex gap-1 mb-2">
+                            <input type="hidden" name="bookingId" value="@booking.BookingId" />
+                            <select name="status" class="form-select form-select-sm">
+                                <option value="Pending" selected="@(booking.Status == "Pending")">Pending</option>
+                                <option value="Confirmed" selected="@(booking.Status == "Confirmed")">Confirmed</option>
+                                <option value="Cancelled" selected="@(booking.Status == "Cancelled")">Cancelled</option>
+                            </select>
+                            <button type="submit" class="btn btn-sm btn-primary">Update</button>
+                        </form>
+
+                        <div class="d-flex justify-content-between mt-3 pt-2 border-top">
+                            <a asp-action="Details" asp-route-id="@booking.BookingId" class="btn btn-link btn-sm p-0 text-decoration-none text-info">
+                                <i class="bi bi-info-circle"></i> Full Details
+                            </a>
+                            <form asp-action="Delete" method="post" onsubmit="return confirm('Delete booking #@booking.BookingId?');">
+                                <input type="hidden" name="id" value="@booking.BookingId" />
+                                <button type="submit" class="btn btn-link btn-sm p-0 text-decoration-none text-danger">
+                                    <i class="bi bi-trash"></i> Delete
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

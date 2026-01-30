@@ -1,0 +1,64 @@
+﻿@model TourismWebsite.Models.TouristBooking
+
+@{
+    ViewData["Title"] = "Book Tour";
+}
+
+<h2 class="mb-3">Book Tour</h2>
+
+@if (Model.Tour != null)
+{
+    <div class="alert alert-info">
+        <strong>@Model.Tour.Title</strong><br />
+        Price per person: <strong>@Model.Tour.Price.ToString("C")</strong><br />
+        Max group size: <strong>@Model.Tour.MaxGroupSize</strong>
+    </div>
+}
+
+<div class="alert alert-warning">
+    <strong>Important:</strong><br />
+    This booking request will be sent to the administrator for approval.<br />
+    Your booking status will remain <strong>Pending</strong> until it is reviewed.<br />
+    You can track the status on the <strong>My Bookings</strong> page.
+</div>
+
+<div asp-validation-summary="All" class="text-danger"></div>
+<form asp-controller="TouristBooking" asp-action="Create" method="post">
+    @Html.AntiForgeryToken()
+
+    <input type="hidden" asp-for="TourId" />
+
+    <div class="mb-3">
+        <label asp-for="TouristName" class="form-label">Name</label>
+        <input asp-for="TouristName" class="form-control" />
+        <span asp-validation-for="TouristName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="TouristEmail" class="form-label">Email</label>
+        <input asp-for="TouristEmail" type="email" class="form-control" />
+        <span asp-validation-for="TouristEmail" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="TouristPhone" class="form-label">Phone</label>
+        <input asp-for="TouristPhone" type="tel" class="form-control" />
+        <span asp-validation-for="TouristPhone" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="NumPeople" class="form-label">Number of People</label>
+        <input asp-for="NumPeople"
+               type="number"
+               min="1"
+               max="@(Model.Tour?.MaxGroupSize ?? 1)"
+               class="form-control" />
+        <span asp-validation-for="NumPeople" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100">Confirm Booking</button>
+</form>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

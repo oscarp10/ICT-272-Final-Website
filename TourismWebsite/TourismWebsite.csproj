@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>aspnet-TourismWebsite-97d212ad-d1e3-4475-b4a7-7ad5574d2873</UserSecretsId>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.22" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.22" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.22" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.22" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.14"><IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+<PrivateAssets>all</PrivateAssets>
+</PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.11" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Data\" />
+    <None Remove="..\.editorconfig" />
+    <None Remove="Services\" />
+    <None Remove="Views\TouristBooking\" />
+    <None Remove="Models\ViewModels\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Data\" />
+    <Folder Include="wwwroot\images\" />
+    <Folder Include="Services\" />
+    <Folder Include="Views\TouristBooking\" />
+    <Folder Include="Models\ViewModels\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\images\" />
+    <Content Remove="Views\Bookings\MyBookings.cshtml" />
+    <Content Remove="Views\Bookings\AdminBookings.cshtml" />
+    <Content Remove="Views\Dashboard\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Areas\Identity\Pages\Account\Register.cshtml.cs">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Compile>
+  </ItemGroup>
+</Project>

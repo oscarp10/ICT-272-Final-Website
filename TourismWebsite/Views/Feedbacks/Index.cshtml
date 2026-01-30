@@ -1,0 +1,92 @@
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> UserManager
+@model IEnumerable<TourismWebsite.Models.Feedback>
+
+@{
+    ViewData["Title"] = "Feedback Management";
+    var currentUser = await UserManager.GetUserAsync(User);
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-chat-left-text me-2"></i>Customer Feedbacks</h2>
+        <span class="badge bg-primary">Total: @Model.Count()</span>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info shadow-sm">
+            <i class="bi bi-info-circle me-2"></i> No feedbacks have been recorded yet.
+        </div>
+    }
+    else
+    {
+        <div class="card shadow-sm">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width: 20%">Tour</th>
+                            <th style="width: 15%">User</th>
+                            <th style="width: 30%">Comment</th>
+                            <th style="width: 15%">Rating</th>
+                            <th style="width: 10%">Date</th>
+                            <th style="width: 10%" class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var f in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <span class="fw-bold text-primary">@f.Tour?.Title</span>
+                                </td>
+                                <td>
+                                    <div class="small fw-bold">@f.User?.UserName</div>
+                                </td>
+                                <td>
+                                    <p class="small text-muted mb-0" title="@f.Comment">
+                                        @(f.Comment.Length > 60 ? f.Comment.Substring(0, 57) + "..." : f.Comment)
+                                    </p>
+                                </td>
+                                <td>
+                                    <div class="text-nowrap">
+                                        @for (int i = 1; i <= 5; i++)
+                                        {
+                                            <i class="bi bi-star-fill @(i <= f.Rating ? "text-warning" : "text-lighter")"
+                                               style="color: @(i <= f.Rating ? "gold" : "#dee2e6")">★</i>
+                                        }
+                                    </div>
+                                </td>
+                                <td>
+                                    <small class="text-secondary">@f.CreatedAt.ToString("dd MMM yyyy")</small>
+                                </td>
+                                <td class="text-center">
+                                    <div class="btn-group btn-group-sm shadow-sm">
+                                        @* Edit for Owner only *@
+                                        @if (currentUser != null && f.UserId == currentUser.Id)
+                                        {
+                                            <a asp-action="Edit" asp-route-id="@f.FeedbackId"
+                                               class="btn btn-outline-primary" title="Edit">
+                                                Edit
+                                            </a>
+                                        }
+
+                                        @* Delete for Admin or Owner *@
+                                        @if (User.IsInRole("Admin") || (currentUser != null && f.UserId == currentUser.Id))
+                                        {
+                                            <a asp-action="Delete" asp-route-id="@f.FeedbackId"
+                                               class="btn btn-outline-danger" title="Delete">
+                                                Delete
+                                            </a>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+</div>

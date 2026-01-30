@@ -1,0 +1,137 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+@inject UserManager<IdentityUser> UserManager
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] - Tourism Website</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
+    @RenderSection("Styles", required: false)
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+    <!-- TOP BAR -->
+    <div class="top-bar custom-top-bar d-flex justify-content-between align-items-center px-4 py-2">
+        <a asp-controller="Home" asp-action="Index" class="logo">TourismLogo</a>
+        <div>
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <span class="me-3">Hello, @User.Identity!.Name</span>
+                <form asp-area="Identity" asp-page="/Account/Logout" method="post" class="d-inline">
+                    <button class="btn btn-light btn-sm">Logout</button>
+                </form>
+            }
+            else
+            {
+                <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-outline-light btn-sm me-2">Login</a>
+                <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-light btn-sm">Register</a>
+            }
+        </div>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+        <div class="container">
+
+            <!-- Logo / Brand -->
+            <a class="navbar-brand" asp-controller="Home" asp-action="Index">TourismLogo</a>
+
+
+
+            <!-- Nav links -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+
+                    <!-- Always visible -->
+                    <li class="nav-item mx-2">
+                        <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link" asp-controller="Tours" asp-action="Index">Tours</a>
+                    </li>
+
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        var currentUser = await UserManager.GetUserAsync(User);
+                        if (currentUser != null)
+                        {
+                            @* Tourist-specific links *@
+                            if (await UserManager.IsInRoleAsync(currentUser, "Tourist"))
+                            {
+                                <li class="nav-item mx-2">
+                                    <a class="nav-link" asp-controller="TouristBooking" asp-action="Index">My Bookings</a>
+                                </li>
+                                <li class="nav-item mx-2">
+                                    <a class="nav-link" asp-controller="Tours" asp-action="Index">Browse Tours</a>
+                                </li>
+                            }
+                            @* Admin-specific links *@
+                            else if (await UserManager.IsInRoleAsync(currentUser, "Admin"))
+                            {
+                                <li class="nav-item mx-2">
+                                    <a class="nav-link" asp-controller="Bookings" asp-action="Index">Manage Bookings</a>
+                                </li>
+                                <li class="nav-item mx-2">
+                                    <a class="nav-link" asp-controller="Tours" asp-action="Index">Manage Tours</a>
+                                </li>
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <!-- Login/Register for guests -->
+                        <li class="nav-item mx-2">
+                            <a class="nav-link" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                        </li>
+                        <li class="nav-item mx-2">
+                            <a class="nav-link" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                        </li>
+                    }
+
+                    <!-- Always visible -->
+                    <li class="nav-item mx-2">
+                        <a class="nav-link" asp-controller="Home" asp-action="About">About</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link" asp-controller="Home" asp-action="Contact">Contact</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link" asp-controller="Home" asp-action="PrivacyPolicy">Privacy Policy</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero"
+         style="background-image: url('/images/hero-placeholder.jpg');
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            height: 300px;
+            position: relative;
+            margin-top: 0;">
+
+
+        <!-- MAIN CONTENT -->
+        <main class="flex-fill container py-5">
+            @RenderBody()
+        </main>
+
+
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+        @RenderSection("Scripts", required: false)
+</body>
+@await Html.PartialAsync("_Footer")
+
+</html>

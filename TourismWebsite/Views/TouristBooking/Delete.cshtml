@@ -1,0 +1,14 @@
+﻿@model TourismWebsite.Models.Booking
+
+<h2>Cancel Booking</h2>
+
+<div class="alert alert-warning">
+    Are you sure you want to cancel your booking for <strong>@Model.Tour?.Title</strong>?
+</div>
+
+<form asp-action="Delete">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="BookingId" />
+    <button type="submit" class="btn btn-danger">Yes, Cancel</button>
+    <a asp-action="Index" class="btn btn-secondary">Back</a>
+</form>

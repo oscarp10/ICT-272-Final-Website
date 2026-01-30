@@ -1,0 +1,20 @@
+﻿@model IEnumerable<TourismWebsite.Models.Feedback>
+
+@if (!Model.Any())
+{
+    <p>No feedback yet.</p>
+}
+else
+{
+    <div class="list-group">
+        @foreach (var f in Model)
+        {
+            <div class="list-group-item mb-2">
+                <strong>@f.User?.UserName ?? "Anonymous"</strong>
+                <span class="text-warning"> - Rating: @f.Rating / 5</span>
+                <p>@f.Comment</p>
+                <small class="text-muted">@f.CreatedAt.ToString("dd MMM yyyy HH:mm")</small>
+            </div>
+        }
+    </div>
+}

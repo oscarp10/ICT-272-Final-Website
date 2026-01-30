@@ -1,0 +1,11 @@
+﻿@model TourismWebsite.Models.Tour
+
+<h2>Delete Tour</h2>
+
+<p>Are you sure you want to delete the tour: <strong>@Model.Title</strong>?</p>
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" asp-for="TourId" />
+    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

@@ -1,0 +1,151 @@
+﻿@model IEnumerable<TourismWebsite.Models.Tour>
+
+@{
+    ViewData["Title"] = "Home";
+}
+
+<div id="heroCarousel" class="carousel slide carousel-fade mb-5" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        @{
+            int i = 0;
+            foreach (var tour in Model.Take(5)) // Limiting to top 5 for the slider
+            {
+                var mainImg = tour.Image1 ?? "/images/default-tour.jpg"; // Fallback image
+
+                <div class="carousel-item @(i == 0 ? "active" : "")">
+                    <div class="hero-container" style="height: 600px; position: relative; background: url('@Url.Content(mainImg)') center/cover no-repeat;">
+
+                        <div class="hero-overlay d-flex align-items-center justify-content-center text-center text-white"
+                             style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4);">
+
+                            <div class="p-4" style="max-width: 800px;">
+                                <h1 class="display-3 fw-bold mb-3">@tour.Title</h1>
+                                <p class="lead mb-4">Experience the @tour.Category adventure starting from AUD @tour.Price.ToString("0.00")</p>
+
+                                <div class="d-flex justify-content-center gap-3">
+                                    <a asp-controller="Tours" asp-action="Details" asp-route-id="@tour.TourId" class="btn btn-primary btn-lg px-5 shadow">View Details</a>
+
+                                    @* Quick Feedback link for Admin/Users *@
+                                    <a asp-controller="Feedbacks" asp-action="Index" asp-route-tourId="@tour.TourId" class="btn btn-outline-light btn-lg">
+                                        View Reviews
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                i++;
+            }
+        }
+    </div>
+
+
+    <div class="container my-5">
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <form asp-action="Index" method="get" class="p-3 bg-white shadow-sm rounded d-flex gap-2">
+                    <input type="text" name="searchString" placeholder="Search by destination..." class="form-control" value="@Context.Request.Query["searchString"]" />
+
+                    <select name="sortOrder" class="form-select" style="width: 250px;">
+                        <option value="">Sort By: Newest</option>
+                        <option value="best_reviewed">Best Reviewed</option>
+                        <option value="price_asc">Price: Low to High</option>
+                        <option value="price_desc">Price: High to Low</option>
+                    </select>
+
+                    <button type="submit" class="btn btn-primary px-4">Filter</button>
+                    <a asp-action="Index" class="btn btn-outline-secondary">Reset</a>
+                </form>
+            </div>
+        </div>
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+
+    <div class="row g-4">
+        @foreach (var tour in Model)
+        {
+            // Assuming your AvgRating logic is ready:
+            var avgRating = tour.Feedbacks?.Any() == true ? tour.Feedbacks.Average(f => f.Rating) : 0;
+
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm overflow-hidden tour-card">
+                    <div class="position-relative">
+                        <img src="@Url.Content(tour.Image1 ?? "/images/default.jpg")" class="card-img-top" style="height:220px; object-fit:cover;" />
+                        <div class="position-absolute top-0 start-0 m-2">
+                            <span class="badge bg-primary">@tour.Category</span>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h5 class="card-title fw-bold mb-0">@tour.Title</h5>
+                            <span class="text-warning fw-bold">
+                                ★ @avgRating.ToString("0.0")
+                            </span>
+                        </div>
+
+                        <p class="text-muted small">@tour.Description.Substring(0, Math.Min(tour.Description.Length, 80))...</p>
+
+                        <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
+                            <div>
+                                <small class="text-muted d-block">Price</small>
+                                <span class="fw-bold text-success fs-5">AUD @tour.Price.ToString("0.00")</span>
+                            </div>
+                            <a asp-controller="Tours"
+                               asp-action="Details"
+                               asp-route-id="@tour.TourId"
+                               class="btn btn-sm btn-dark px-3">
+                                View Tour
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+    
+
+<div class="container mb-5">
+    <div class="text-center mb-4">
+        <h2 class="fw-bold">Meet Our Professional Team</h2>
+        <div class="mx-auto bg-primary" style="height: 3px; width: 60px;"></div>
+    </div>
+
+    <div class="row g-4 justify-content-center text-center">
+        @{
+            var team = new[] {
+                new { ID = "20027319", Name = "Oskar" },
+                new { ID = "20027505", Name = "Bipin" },
+                new { ID = "20030519", Name = "Prabesh" },
+                new { ID = "20031336", Name = "Susan" }
+            };
+
+            foreach (var member in team)
+            {
+                <div class="col-6 col-md-3">
+                    <div class="card h-100 border-0 shadow-sm hover-up">
+                        <div class="card-body">
+                            <div class="rounded-circle bg-light d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 80px; height: 80px;">
+                                <i class="bi bi-person-badge text-primary fs-2"></i>
+                            </div>
+                            <h5 class="card-title mb-1">@member.Name</h5>
+                            <p class="text-muted small mb-0">Student ID: @member.ID</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>

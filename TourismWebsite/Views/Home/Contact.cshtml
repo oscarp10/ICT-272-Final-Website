@@ -1,0 +1,97 @@
+﻿@{
+    ViewData["Title"] = "Contact Us";
+    Layout = "~/Views/Shared/_PageTemplate.cshtml";
+}
+
+<div class="hero" style="background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=1600&q=80') center/cover; height: 350px; display: flex; align-items: center; justify-content: center;">
+    <div class="text-center text-white">
+        <h1 class="display-4 fw-bold">Let's Plan Your Journey</h1>
+        <p class="lead">Our travel specialists are ready to turn your dreams into a personalized itinerary.</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row g-5">
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm bg-primary text-white h-100 p-4">
+                <h3 class="mb-4">Global Hub</h3>
+                <p class="mb-4 small opacity-75">Our central office coordinates tours across five continents, ensuring local expertise with global standards.</p>
+
+                <div class="mb-4">
+                    <h6 class="fw-bold"><i class="bi bi-geo-alt-fill me-2"></i> Headquarters</h6>
+                    <p class="small mb-0">123 Koi ST, Level 5, Sydney CBD, NSW 2000, Australia</p>
+                </div>
+
+                <div class="mb-4">
+                    <h6 class="fw-bold"><i class="bi bi-telephone-fill me-2"></i> Direct Support</h6>
+                    <p class="small mb-0">+61 12 000 000 (General)<br>+61 12 999 999 (Emergency/24-7)</p>
+                </div>
+
+                <div class="mb-4">
+                    <h6 class="fw-bold"><i class="bi bi-envelope-paper-fill me-2"></i> Department Emails</h6>
+                    <p class="small mb-0">Bookings: sales@tourism.com<br>Support: help@tourism.com<br>Media: press@tourism.com</p>
+                </div>
+
+                <hr>
+                <h6 class="fw-bold mb-3">Connect With Us</h6>
+                <div class="d-flex gap-3">
+                    <a href="#" class="text-white fs-5"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="text-white fs-5"><i class="bi bi-linkedin"></i></a>
+                    <a href="#" class="text-white fs-5"><i class="bi bi-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm p-4 p-md-5">
+                <h2 class="text-primary mb-4 fw-bold">Send an Inquiry</h2>
+                <form method="post" asp-controller="Home" asp-action="SubmitContact">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Full Name</label>
+                            <input type="text" class="form-control bg-light border-0 py-2" name="Name" placeholder="Enter your name" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Email Address</label>
+                            <input type="email" class="form-control bg-light border-0 py-2" name="Email" placeholder="email@address.com" required />
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label small fw-bold">Travel Interest</label>
+                            <select class="form-select bg-light border-0 py-2">
+                                <option>Solo Adventure</option>
+                                <option>Family Vacation</option>
+                                <option>Luxury Getaway</option>
+                                <option>Corporate Retreat</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label small fw-bold">Message</label>
+                            <textarea class="form-control bg-light border-0 py-2" name="Message" rows="5" placeholder="Tell us where you want to go and what you want to experience..." required></textarea>
+                        </div>
+                        <div class="col-12 mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg px-5 shadow-sm w-100">Submit Message</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-5 py-4">
+        <h3 class="text-center fw-bold mb-4">Frequently Asked Questions</h3>
+        <div class="row g-3">
+            <div class="col-md-6">
+                <div class="p-3 border-start border-primary border-4 bg-white shadow-sm">
+                    <h6>How do I cancel a booking?</h6>
+                    <p class="small text-muted mb-0">Cancellations can be made through your user dashboard. Refunds are subject to the specific tour's policy.</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="p-3 border-start border-primary border-4 bg-white shadow-sm">
+                    <h6>Are the tours inclusive of flights?</h6>
+                    <p class="small text-muted mb-0">Our packages typically cover ground transport and accommodation. Flight assistance can be requested via email.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

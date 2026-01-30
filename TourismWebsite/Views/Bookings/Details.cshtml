@@ -1,0 +1,26 @@
+@model TourismWebsite.Models.TouristBooking
+
+@{
+    ViewData["Title"] = "Booking Details";
+}
+
+<h2>Booking Details</h2>
+
+<div class="card mb-4 shadow-sm">
+    <div class="card-header">
+        <strong>Booking ID:</strong> @Model.BookingId
+    </div>
+    <div class="card-body">
+        <p><strong>Tour:</strong> @Model.Tour?.Title</p>
+        <p><strong>Tourist Name:</strong> @Model.TouristName</p>
+        <p><strong>Email:</strong> @Model.TouristEmail</p>
+        <p><strong>Phone:</strong> @Model.TouristPhone</p>
+        <p><strong>Number of People:</strong> @Model.NumPeople</p>
+        <p><strong>Total Price:</strong> @Model.TotalPrice.ToString("C")</p>
+        <p><strong>Booking Date:</strong> @Model.BookingDate.ToString("g")</p>
+        <p><strong>Status:</strong> @Model.Status</p>
+    </div>
+    <div class="card-footer">
+        <a asp-action="Index" class="btn btn-secondary">Back to All Bookings</a>
+    </div>
+</div>

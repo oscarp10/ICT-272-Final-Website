@@ -1,0 +1,57 @@
+@model TourismWebsite.Models.Booking
+
+@{
+    ViewData["Title"] = "Edit Booking";
+}
+
+<h2 class="mb-4">Edit Booking</h2>
+
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Booking Details</h4>
+            </div>
+            <div class="card-body">
+                <form asp-action="Edit" asp-route-id="@Model.BookingId" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <input type="hidden" asp-for="BookingId" />
+
+                    <!-- Tour Id -->
+                    <div class="mb-3">
+                        <label asp-for="TourId" class="form-label">Tour ID</label>
+                        <input asp-for="TourId" class="form-control" />
+                        <span asp-validation-for="TourId" class="text-danger"></span>
+                    </div>
+
+                    <!-- Tourist Name -->
+                    <div class="mb-3">
+                        <label asp-for="TouristName" class="form-label">Tourist Name</label>
+                        <input asp-for="TouristName" class="form-control" />
+                        <span asp-validation-for="TouristName" class="text-danger"></span>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="mb-3">
+                        <label asp-for="Status" class="form-label">Status</label>
+                        <select asp-for="Status" class="form-select">
+                            <option value="Pending" selected="@Model.Status == " Pending"">Pending</option>
+                            <option value="Confirmed" selected="@Model.Status == " Confirmed"">Confirmed</option>
+                            <option value="Cancelled" selected="@Model.Status == " Cancelled"">Cancelled</option>
+                        </select>
+                        <span asp-validation-for="Status" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">Save Changes</button>
+                </form>
+
+                <a asp-action="Index" class="btn btn-secondary w-100 mt-2">Back to List</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

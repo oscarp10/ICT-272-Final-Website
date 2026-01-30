@@ -1,0 +1,106 @@
+@model TourismWebsite.Models.Tour
+
+@{
+    ViewData["Title"] = "Create Tour";
+    var categories = ViewBag.Categories as List<string> ?? new List<string>();
+}
+
+<h2 class="mb-4">Create New Tour</h2>
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">New Tour Details</h4>
+            </div>
+            <div class="card-body">
+                <form asp-action="Create" method="post" enctype="multipart/form-data">
+
+                    <!-- Title -->
+                    <div class="mb-3">
+                        <label asp-for="Title" class="form-label">Title</label>
+                        <input asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+
+                    <!-- Category -->
+                    <div class="mb-3">
+                        <label asp-for="Category" class="form-label">Category</label>
+                        <input asp-for="Category" list="categoryList" class="form-control" placeholder="Type or select a category" />
+                        <datalist id="categoryList">
+                            @foreach (var cat in categories)
+                            {
+                                <option value="@cat"></option>
+                            }
+                        </datalist>
+                        <span asp-validation-for="Category" class="text-danger"></span>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="mb-3">
+                        <label asp-for="Description" class="form-label">Description</label>
+                        <textarea asp-for="Description" class="form-control"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="row">
+                        <!-- Price -->
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Price" class="form-label">Price (AUD)</label>
+                            <div class="input-group">
+                                <span class="input-group-text">AUD</span>
+                                <input asp-for="Price" type="number" step="0.01" class="form-control" placeholder="Amount in AUD" />
+                            </div>
+                            <span asp-validation-for="Price" class="text-danger"></span>
+                        </div>
+
+                        <!-- Max Group Size -->
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="MaxGroupSize" class="form-label">Max Group Size</label>
+                            <input asp-for="MaxGroupSize" type="number" min="1" class="form-control" />
+                            <span asp-validation-for="MaxGroupSize" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <!-- Available Date -->
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="AvailableDate" class="form-label">Available Date</label>
+                            <input asp-for="AvailableDate" type="date" class="form-control" />
+                            <span asp-validation-for="AvailableDate" class="text-danger"></span>
+                        </div>
+
+                        <!-- Created Date -->
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="CreatedAt" class="form-label">Created At</label>
+                            <input asp-for="CreatedAt" type="datetime-local" class="form-control"
+                                   value="@Model.CreatedAt?.ToString("yyyy-MM-ddTHH:mm")" />
+                            <span asp-validation-for="CreatedAt" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <!-- Images -->
+                    <div class="mb-3">
+                        <label class="form-label">Upload Image 1</label>
+                        <input asp-for="UploadImage1" class="form-control" type="file" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Upload Image 2</label>
+                        <input asp-for="UploadImage2" class="form-control" type="file" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Upload Image 3</label>
+                        <input asp-for="UploadImage3" class="form-control" type="file" />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">Create Tour</button>
+                    </p>
+                    <a asp-action="Index" class="btn btn-primary w-100">Back to List</a>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,204 @@
+@model IEnumerable<TourismWebsite.Models.Tour>
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> UserManager
+
+@{
+    ViewData["Title"] = "Browse Tours";
+    var currentUser = await UserManager.GetUserAsync(User);
+    var isAdmin = currentUser != null && await UserManager.IsInRoleAsync(currentUser, "Admin");
+    var ratings = ViewBag.Ratings as Dictionary<int, double> ?? new Dictionary<int, double>();
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-0 text-dark">Explore Our Tours</h2>
+            <p class="text-muted">Find your next adventure from our curated list.</p>
+        </div>
+        @if (isAdmin)
+        {
+            <a asp-action="Create" class="btn btn-success shadow-sm">
+                <i class="bi bi-plus-lg me-1"></i> Create New Tour
+            </a>
+        }
+    </div>
+
+    <div class="card border-0 shadow-sm mb-5 bg-light">
+        <div class="card-body">
+            <form asp-action="Index" method="get" class="row g-3 align-items-center">
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
+                        <input type="text" name="searchString" class="form-control border-start-0" placeholder="Search destinations..." value="@Context.Request.Query["searchString"]">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <select name="category" class="form-select">
+                        <option value="All">All Categories</option>
+                        @foreach (var cat in ViewBag.Categories ?? new List<string>())
+                        {
+                            <option value="@cat" selected="@(ViewBag.SelectedCategory == cat)">@cat</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select name="sortOrder" class="form-select">
+                        <option value="">Sort By: Newest</option>
+                        <option value="best_reviewed" selected="@(Context.Request.Query["sortOrder"] == "best_reviewed")">Best Reviewed</option>
+                        <option value="price_asc" selected="@(Context.Request.Query["sortOrder"] == "price_asc")">Price: Low to High</option>
+                        <option value="price_desc" selected="@(Context.Request.Query["sortOrder"] == "price_desc")">Price: High to Low</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">Filter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        @foreach (var tour in Model)
+        {
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0 tour-card">
+                    <div class="position-relative">
+                        <img src="@Url.Content(tour.Image1 ?? "/images/default.jpg")" class="card-img-top" alt="@tour.Title" />
+                        <span class="badge bg-primary position-absolute top-0 start-0 m-3 shadow-sm">@tour.Category</span>
+                    </div>
+
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title fw-bold">@tour.Title</h5>
+                        <p class="card-text text-muted small mb-3">
+                            @(tour.Description?.Length > 100 ? tour.Description.Substring(0, 100) + "..." : tour.Description)
+                        </p>
+
+                        @{ double avgRating = ratings.ContainsKey(tour.TourId) ? ratings[tour.TourId] : 0; }
+                        <div class="mb-3">
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                <i class="bi @(i <= Math.Round(avgRating) ? "bi-star-fill text-warning" : "bi-star text-lightgray")"></i>
+                            }
+                            <span class="ms-1 small text-muted">(@avgRating.ToString("0.0"))</span>
+                        </div>
+
+                        <div class="mb-3 mt-auto">
+                            <a asp-controller="Feedbacks" asp-action="Index" asp-route-tourId="@tour.TourId" class="btn btn-sm btn-outline-info w-100">
+                                <i class="bi bi-chat-left-dots me-1"></i> View Feedback
+                            </a>
+                        </div>
+
+                        @if (!isAdmin)
+                        {
+                            <div class="d-flex gap-2">
+                                <a asp-controller="TouristBooking" asp-action="Create" asp-route-tourId="@tour.TourId" class="btn btn-primary btn-sm flex-grow-1">Book Now</a>
+                                <a asp-action="Details" asp-route-id="@tour.TourId" class="btn btn-outline-secondary btn-sm">Details</a>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="card-footer bg-white border-top-0 pb-3 px-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="text-success fw-bold fs-5">@tour.Price.ToString("C")</span>
+                        </div>
+
+                        @if (isAdmin)
+                        {
+                            <hr class="my-2 opacity-25" />
+                            <div class="admin-grid">
+                                <a asp-action="Edit" asp-route-id="@tour.TourId" class="btn btn-warning btn-sm" title="Edit">
+                                    <i class="bi bi-pencil"></i> Edit
+                                </a>
+                                <a asp-action="Details" asp-route-id="@tour.TourId" class="btn btn-secondary btn-sm text-white" title="Info">
+                                    <i class="bi bi-info-circle"></i> Info
+                                </a>
+                                <form asp-action="Delete" method="post" class="m-0 p-0" onsubmit="return confirm('Delete this tour?');">
+                                    <input type="hidden" name="id" value="@tour.TourId" />
+                                    <button type="submit" class="btn btn-danger btn-sm w-100 delete-btn-fix" title="Delete">
+                                        <i class="bi bi-trash"></i> Delete
+                                    </button>
+                                </form>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    /* =====================
+       CARD & GRID STYLING
+    ===================== */
+    .tour-card {
+        transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+        border-radius: 12px !important;
+        overflow: hidden;
+    }
+
+        .tour-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.12) !important;
+        }
+
+        .tour-card img {
+            height: 220px;
+            object-fit: cover;
+        }
+
+    /* =====================
+       ADMIN GRID (3 COLUMNS)
+    ===================== */
+    .admin-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr 0.8fr; /* Responsive column widths */
+        gap: 6px;
+        width: 100%;
+        align-items: stretch;
+    }
+
+    /* =====================
+       BUTTON REFINEMENTS
+    ===================== */
+    .btn-sm {
+        min-height: 38px; /* Critical fix: prevents "red line" collapse */
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600 !important;
+        border-radius: 6px !important;
+        transition: all 0.2s;
+    }
+
+    /* Fixed Delete Button Style */
+    .delete-btn-fix {
+        background-color: #dc3545 !important;
+        color: white !important;
+        border: none !important;
+        padding: 1 !important;
+    }
+
+        .delete-btn-fix:hover {
+            background-color: #a71d2a !important;
+        }
+
+    /* View Feedback Button (Tourist-friendly) */
+    .btn-outline-info {
+        border: 1.5px solid #0dcaf0 !important;
+        color: #0dcaf0 !important;
+    }
+
+        .btn-outline-info:hover {
+            background-color: #0dcaf0 !important;
+            color: white !important;
+        }
+
+    /* Ratings */
+    .text-warning {
+        color: #f5b301 !important;
+    }
+
+    .text-lightgray {
+        color: #dee2e6;
+    }
+</style>

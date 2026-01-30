@@ -1,0 +1,33 @@
+﻿@model TourismWebsite.Models.Tour
+
+@{
+    ViewData["Title"] = "Delete Tour";
+}
+
+<h2>Delete Tour</h2>
+
+<div class="alert alert-warning">
+    <p>Are you sure you want to delete the following tour?</p>
+</div>
+
+<div class="card mb-3" style="max-width: 540px;">
+    <div class="row g-0">
+        <div class="col-md-4">
+            <img src="@Model.Image1" class="img-fluid rounded-start" alt="@Model.Title">
+        </div>
+        <div class="col-md-8">
+            <div class="card-body">
+                <h5 class="card-title">@Model.Title</h5>
+                <p class="card-text">@Model.Description</p>
+                <p class="card-text"><small class="text-muted">Price: @Model.Price.ToString("C")</small></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" name="id" value="@Model.TourId" />
+    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
+
