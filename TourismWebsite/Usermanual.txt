@@ -1,0 +1,220 @@
+﻿============================================================
+USER MANUAL
+TOURISM BOOKING WEB APPLICATION
+============================================================
+
+Course: ICT272 – Web Design and Development
+Assessment: Assignment 3B
+System Type: Web Application
+Roles: Tourist, Administrator
+
+------------------------------------------------------------
+1. INTRODUCTION
+------------------------------------------------------------
+
+This user manual describes how to use the Tourism Booking Web
+Application developed as part of Assignment 3A.
+
+The system allows tourists to browse tours, book tour packages,
+manage their bookings, and submit feedback. Administrators can
+manage tours, bookings, and feedback using secure role-based
+access control.
+
+------------------------------------------------------------
+2. USER ROLES
+------------------------------------------------------------
+
+Role: Tourist
+- Browse tours
+- Book tours
+- View own bookings
+- Cancel bookings
+- Submit feedback
+- Delete own feedback
+
+Role: Administrator
+- Create tours
+- Edit tours
+- Delete tours
+- View and manage all bookings
+- Manage user feedback
+
+------------------------------------------------------------
+3. SYSTEM ACCESS
+------------------------------------------------------------
+
+3.1 Registration
+- Click the Register link from the navigation menu
+- Enter required user details
+- Submit the form to create an account
+
+3.2 Login
+- Click Login
+- Enter registered email and password
+- User is redirected based on assigned role
+
+------------------------------------------------------------
+4. TOURIST USER GUIDE
+------------------------------------------------------------
+
+4.1 View Tours
+- Navigate to the Tours page
+- Browse available tour packages
+- Click Details to view full tour information
+
+Tour details include:
+- Tour description
+- Price
+- Images
+- Maximum group size
+
+------------------------------------------------------------
+
+4.2 Book a Tour
+- Login as Tourist
+- Open the Tours page
+- Click Book Now on a selected tour
+- Fill in the booking form:
+  * Tourist Name
+  * Email
+  * Phone Number
+  * Number of People
+- Submit the booking
+
+------------------------------------------------------------
+
+4.3 Booking Validation
+- All fields are required
+- Number of people cannot exceed the tour’s maximum group size
+- If validation fails, an error message is displayed
+
+------------------------------------------------------------
+
+4.4 View My Bookings
+- Click My Bookings from the menu
+- View all bookings made by the logged-in tourist
+- Booking details include:
+  * Tour name
+  * Number of people
+  * Total price
+  * Booking status
+  * Booking date
+
+------------------------------------------------------------
+
+4.5 Cancel Booking
+- Navigate to My Bookings
+- Click Delete next to a booking
+- Confirm deletion
+- Booking is permanently removed
+
+------------------------------------------------------------
+
+4.6 Submit Feedback
+- Login as Tourist
+- Navigate to Feedback page
+- Select a tour
+- Enter feedback and rating
+- Submit feedback
+
+------------------------------------------------------------
+
+4.7 Delete Feedback
+- Navigate to Feedback or My Feedback page
+- Click Delete on own feedback
+- Confirm deletion
+
+------------------------------------------------------------
+5. ADMINISTRATOR USER GUIDE
+------------------------------------------------------------
+
+5.1 Create Tour
+- Login as Admin
+- Navigate to Tours
+- Click Create New Tour
+- Enter tour details:
+  * Title
+  * Description
+  * Price
+  * Available date
+  * Maximum group size
+  * Upload images
+- Save the tour
+
+------------------------------------------------------------
+
+5.2 Edit Tour
+- Navigate to Tours
+- Click Edit on a tour
+- Modify details
+- Save changes
+
+------------------------------------------------------------
+
+5.3 Delete Tour
+- Navigate to Tours
+- Click Delete
+- Confirm deletion
+- Tour is removed from the system
+
+------------------------------------------------------------
+
+5.4 Manage Bookings
+- Navigate to Manage Bookings
+- View all tourist bookings
+- Review booking details including:
+  * Tourist name
+  * Tour name
+  * Total price
+  * Status
+
+------------------------------------------------------------
+
+5.5 Update Booking Status
+- Select a booking
+- Change booking status (Pending, Approved, Cancelled)
+- Save changes
+
+------------------------------------------------------------
+
+5.6 Manage Feedback
+- Navigate to Feedback Management
+- View all feedback
+- Delete inappropriate or irrelevant feedback
+
+------------------------------------------------------------
+6. SECURITY AND ACCESS CONTROL
+------------------------------------------------------------
+
+- Role-based authorization using ASP.NET Identity
+- Tourists cannot access admin pages
+- Admin actions are protected by role validation
+- Users can only modify or delete their own data
+
+------------------------------------------------------------
+7. ERROR HANDLING AND VALIDATION
+------------------------------------------------------------
+
+- Required field validation on all forms
+- Booking capacity validation
+- Unauthorized access prevention
+- User-friendly error messages
+
+------------------------------------------------------------
+8. LOGOUT
+------------------------------------------------------------
+
+- Click Logout from the navigation menu
+- User session ends securely
+
+------------------------------------------------------------
+9. CONCLUSION
+------------------------------------------------------------
+
+The Tourism Booking Web Application provides a complete and secure
+solution for managing tours, bookings, and feedback using
+role-based access control and validation mechanisms.
+
+============================================================
+END OF USER MANUAL
+============================================================
